@@ -2,12 +2,12 @@
 function updateAirlines() {
   const client = document.getElementById("client").value;
   const airline = document.getElementById("airline");
-  airline.innerHTML = "";
+  airline.innerHTML = "<option value=''>Select Airline</option>";
 
   if (client === "NAK") {
-    airline.innerHTML = "<option value='JAL'>JAL</option><option value='NCA'>NCA</option>";
+    airline.innerHTML += "<option value='JAL'>JAL</option><option value='NCA'>NCA</option>";
   } else if (client === "TK") {
-    airline.innerHTML = "<option value='NCA'>NCA</option>";
+    airline.innerHTML += "<option value='NCA'>NCA</option>";
   }
 }
 
@@ -42,24 +42,16 @@ function calculate() {
 
   const rateTable = rateData[client][airline][mode];
   const matchedTier = rateTable.find(entry => {
-  const label = entry.weight_tier.replace(/\s/g, '').toLowerCase();
+    const label = entry.weight_tier.replace(/\s/g, '').toLowerCase();
 
-  if (label.includes("1000kg<")) return usedWeight > 1000;
-  if (label.includes("500kg<")) return usedWeight > 500 && usedWeight <= 1000;
-  if (label.includes("300kg<")) return usedWeight > 300 && usedWeight <= 500;
-  if (label.includes("100kg<")) return usedWeight > 100 && usedWeight <= 300;
-  if (label.includes("45kg<")) return usedWeight > 45 && usedWeight <= 100;
-  if (label.includes(">45kg")) return usedWeight <= 45;
+    if (label.includes("1000kg<")) return usedWeight > 1000;
+    if (label.includes("500kg<")) return usedWeight > 500 && usedWeight <= 1000;
+    if (label.includes("300kg<")) return usedWeight > 300 && usedWeight <= 500;
+    if (label.includes("100kg<")) return usedWeight > 100 && usedWeight <= 300;
+    if (label.includes("45kg<")) return usedWeight > 45 && usedWeight <= 100;
+    if (label.includes(">45kg")) return usedWeight <= 45;
 
-  return false;
-}
-    const tier = entry.weight_tier.replace(/\s+/g, '');
-    if (tier.includes('Infinity')) return true;
-    const match = tier.match(/(\d+)(kg)?\s*<?\s*(\d+)?/);
-    if (!match) return false;
-    const min = parseFloat(match[1]);
-    const max = match[3] ? parseFloat(match[3]) : Infinity;
-    return usedWeight > min && usedWeight <= max;
+    return false;
   }) || rateTable[rateTable.length - 1];
 
   let table = "<table><tr><th>Charge Type</th><th>Rate / Unit</th><th>Calculation</th><th>Amount (USD)</th></tr>";
@@ -86,3 +78,11 @@ function calculate() {
   table += `<tr><th colspan="3">Total</th><th>${total.toFixed(2)}</th></tr></table>`;
   output.innerHTML = table;
 }
+
+// Auto-trigger airline population on page load if client is already selected
+window.onload = function () {
+  const clientSelect = document.getElementById("client");
+  if (clientSelect.value) {
+    updateAirlines();
+  }
+};
