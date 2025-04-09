@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Air Freight Calculator</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>Air Freight Cost Calculator</h1>
+    <form id="freightForm">
+      <label>Client:
+        <select id="client" onchange="updateAirlines()">
+          <option value="">Select Client</option>
+          <option value="NAK">NAK</option>
+          <option value="TK">TK</option>
+        </select>
+      </label>
+      <label>Actual Weight (kg):
+        <input type="number" id="actualWeight" required />
+      </label>
+      <label>Volume (m³):
+        <input type="number" id="volume" required />
+      </label>
+      <label>Airline:
+        <select id="airline"></select>
+      </label>
+      <label>DG (Dangerous Goods):
+        <select id="dg" onchange="toggleBoxCount()">
+          <option value="No">No</option>
+          <option value="Yes">Yes</option>
+          <option value="N/A">N/A</option>
+        </select>
+      </label>
+      <label>Dry Ice (TK only):
+        <select id="dryIce" onchange="toggleBoxCount()">
+          <option value="No">No</option>
+          <option value="Yes">Yes</option>
+          <option value="N/A">N/A</option>
+        </select>
+      </label>
+      <label id="boxCountLabel" style="display:none;"># of Boxes:
+        <input type="number" id="boxCount" min="1"/>
+      </label>
+      <button type="button" onclick="calculate()">Calculate</button>
+    </form>
+    <div id="output"></div>
+  </div>
+  <script src="rateData.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
