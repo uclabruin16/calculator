@@ -23,8 +23,12 @@
       <label>Volume (m³):
         <input type="number" id="volume" required />
       </label>
-      <label>Airline:
-        <select id="airline"></select>
+     <label>Airline:
+     <select id="airline">
+        <option value="">Select Airline</option>
+        <option value="JAL">JAL</option>
+        <option value="NCA">NCA</option>
+      </select>
       </label>
       <label>DG (Dangerous Goods):
         <select id="dg" onchange="toggleBoxCount()">
