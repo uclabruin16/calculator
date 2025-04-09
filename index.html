@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Little Calculator</title>
+  <title>Air Freight Calculator</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="container">
-    <h1>Little Calculator</h1>
+    <h1>Air Freight Cost Calculator</h1>
     <form id="freightForm">
       <label>Client:
         <select id="client" onchange="updateAirlines()">
@@ -23,12 +23,8 @@
       <label>Volume (m³):
         <input type="number" id="volume" required />
       </label>
-     <label>Airline:
-     <select id="airline">
-        <option value="">Select Airline</option>
-        <option value="JAL">JAL</option>
-        <option value="NCA">NCA</option>
-      </select>
+      <label>Airline:
+        <select id="airline"></select>
       </label>
       <label>DG (Dangerous Goods):
         <select id="dg" onchange="toggleBoxCount()">
