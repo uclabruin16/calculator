@@ -54,7 +54,18 @@ function calculate() {
     return false;
   }) || rateTable[rateTable.length - 1];
 
-  let table = "<table><tr><th>Charge Type</th><th>Rate / Unit</th><th>Calculation</th><th>Amount (USD)</th></tr>";
+  let table = `
+    <div class="mt-8 bg-white shadow-md rounded-lg overflow-hidden border">
+      <table class="w-full text-sm text-left border-collapse">
+        <thead class="bg-gray-100 font-semibold">
+          <tr>
+            <th class="p-3 border-b">Charge Type</th>
+            <th class="p-3 border-b">Rate / Unit</th>
+            <th class="p-3 border-b">Calculation</th>
+            <th class="p-3 border-b text-right">Amount (USD)</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-200">`;
   let total = 0;
 
   for (const [charge, data] of Object.entries(matchedTier)) {
@@ -72,10 +83,10 @@ function calculate() {
       calc = "Flat";
     }
     total += amount;
-    table += `<tr><td>${charge}</td><td>${data.unit.replace('_', '/')}</td><td>${calc}</td><td>${amount.toFixed(2)}</td></tr>`;
+    table += `<tr class="hover:bg-blue-50"><td class="p-2">${charge}</td><td class="p-2">${data.unit.replace('_', '/')}</td><td class="p-2">${calc}</td><td class="p-2 text-right">${amount.toFixed(2)}</td></tr>`;
   }
 
-  table += `<tr><th colspan="3">Total</th><th>${total.toFixed(2)}</th></tr></table>`;
+  table += `</tbody><tfoot><tr class="font-bold text-black border-t"><td class="p-3" colspan="3">Total</td><td class="p-3 text-right">${total.toFixed(2)}</td></tr></tfoot></table></div>`;
   output.innerHTML = table;
 }
 
