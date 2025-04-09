@@ -42,6 +42,17 @@ function calculate() {
 
   const rateTable = rateData[client][airline][mode];
   const matchedTier = rateTable.find(entry => {
+  const label = entry.weight_tier.replace(/\s/g, '').toLowerCase();
+
+  if (label.includes("1000kg<")) return usedWeight > 1000;
+  if (label.includes("500kg<")) return usedWeight > 500 && usedWeight <= 1000;
+  if (label.includes("300kg<")) return usedWeight > 300 && usedWeight <= 500;
+  if (label.includes("100kg<")) return usedWeight > 100 && usedWeight <= 300;
+  if (label.includes("45kg<")) return usedWeight > 45 && usedWeight <= 100;
+  if (label.includes(">45kg")) return usedWeight <= 45;
+
+  return false;
+}
     const tier = entry.weight_tier.replace(/\s+/g, '');
     if (tier.includes('Infinity')) return true;
     const match = tier.match(/(\d+)(kg)?\s*<?\s*(\d+)?/);
