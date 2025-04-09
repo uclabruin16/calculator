@@ -35,12 +35,18 @@ function calculate() {
   const output = document.getElementById("output");
   output.innerHTML = "";
 
-  if (!rateData[client] || !rateData[client][airline] || !rateData[client][airline][mode]) {
+  const baseRateTable = rateData[client][airline]["regular"] || [];
+  const modeRateTable = rateData[client][airline][mode] || [];
+
+  const rateTable = dg || dryIce
+    ? baseRateTable.map((tier, i) => ({ ...tier, ...modeRateTable[i] }))
+    : baseRateTable;
+
+  if (!rateTable || !rateTable.length) {
     output.innerHTML = "<p>Rates not found for this configuration.</p>";
     return;
   }
 
-  const rateTable = rateData[client][airline][mode];
   const matchedTier = rateTable.find(entry => {
     const label = entry.weight_tier.replace(/\s/g, '').toLowerCase();
 
@@ -70,25 +76,16 @@ function calculate() {
 
   for (const [charge, data] of Object.entries(matchedTier)) {
     if (charge === "weight_tier") continue;
-    // Include DG-only charges only when relevant
     if (charge === "raf_fee" && !dg) continue;
     if (charge === "dg_dec" && !dg) continue;
     if (charge === "label_inspection" && !(dg || dryIce)) continue;
-    // ensure we continue through all charges, never short-circuit based on DG status
+
     let amount = 0;
     let calc = "";
     if (data.unit === "per_kg") {
       amount = data.rate * usedWeight;
       calc = `${usedWeight.toFixed(2)} × ${data.rate}`;
     } else if (data.unit === "per_box") {
-      // Always calculate per_box in addition to all other charges — do not isolate
-      if (charge === "raf_fee") {
-        amount = Math.max(130, boxCount * data.rate);
-        calc = `${boxCount} × ${data.rate} or $130 min`;
-      } else {
-        amount = data.rate * boxCount;
-        calc = `${boxCount} × ${data.rate}`;
-      }
       if (charge === "raf_fee") {
         amount = Math.max(130, boxCount * data.rate);
         calc = `${boxCount} × ${data.rate} or $130 min`;
@@ -108,7 +105,6 @@ function calculate() {
   output.innerHTML = table;
 }
 
-// Auto-trigger airline population on page load if client is already selected
 window.onload = function () {
   const clientSelect = document.getElementById("client");
   if (clientSelect.value) {
