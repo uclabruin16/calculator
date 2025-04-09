@@ -1,52 +1,71 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Air Freight Calculator</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>Air Freight Cost Calculator</title>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-  <div class="container">
-    <h1>Air Freight Cost Calculator</h1>
-    <form id="freightForm">
-      <label>Client:
-        <select id="client" onchange="updateAirlines()">
+<body class="bg-gray-100 text-gray-800">
+  <div class="max-w-2xl mx-auto mt-12 p-8 bg-white rounded-lg shadow-lg">
+    <h1 class="text-3xl font-bold mb-6 text-center">Air Freight Cost Calculator</h1>
+    <form id="freightForm" class="space-y-4">
+      <div>
+        <label class="block font-semibold mb-1">Client:</label>
+        <select id="client" onchange="updateAirlines()" class="w-full p-2 border rounded">
           <option value="">Select Client</option>
           <option value="NAK">NAK</option>
           <option value="TK">TK</option>
         </select>
-      </label>
-      <label>Actual Weight (kg):
-        <input type="number" id="actualWeight" required />
-      </label>
-      <label>Volume (m³):
-        <input type="number" id="volume" required />
-      </label>
-      <label>Airline:
-        <select id="airline"></select>
-      </label>
-      <label>DG (Dangerous Goods):
-        <select id="dg" onchange="toggleBoxCount()">
+      </div>
+
+      <div>
+        <label class="block font-semibold mb-1">Actual Weight (kg):</label>
+        <input type="number" id="actualWeight" class="w-full p-2 border rounded" required />
+      </div>
+
+      <div>
+        <label class="block font-semibold mb-1">Volume (m³):</label>
+        <input type="number" id="volume" class="w-full p-2 border rounded" required />
+      </div>
+
+      <div>
+        <label class="block font-semibold mb-1">Airline:</label>
+        <select id="airline" class="w-full p-2 border rounded">
+          <option value="">Select Airline</option>
+        </select>
+      </div>
+
+      <div>
+        <label class="block font-semibold mb-1">DG (Dangerous Goods):</label>
+        <select id="dg" onchange="toggleBoxCount()" class="w-full p-2 border rounded">
           <option value="No">No</option>
           <option value="Yes">Yes</option>
           <option value="N/A">N/A</option>
         </select>
-      </label>
-      <label>Dry Ice (TK only):
-        <select id="dryIce" onchange="toggleBoxCount()">
+      </div>
+
+      <div>
+        <label class="block font-semibold mb-1">Dry Ice (TK only):</label>
+        <select id="dryIce" onchange="toggleBoxCount()" class="w-full p-2 border rounded">
           <option value="No">No</option>
           <option value="Yes">Yes</option>
           <option value="N/A">N/A</option>
         </select>
-      </label>
-      <label id="boxCountLabel" style="display:none;"># of Boxes:
-        <input type="number" id="boxCount" min="1"/>
-      </label>
-      <button type="button" onclick="calculate()">Calculate</button>
+      </div>
+
+      <div id="boxCountLabel" style="display:none;">
+        <label class="block font-semibold mb-1"># of Boxes:</label>
+        <input type="number" id="boxCount" min="1" class="w-full p-2 border rounded"/>
+      </div>
+
+      <button type="button" onclick="calculate()" class="w-full py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded">Calculate</button>
     </form>
-    <div id="output"></div>
+
+    <div id="output" class="mt-8"></div>
   </div>
+
   <script src="rateData.js"></script>
   <script src="script.js"></script>
 </body>
