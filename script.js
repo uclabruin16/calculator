@@ -72,6 +72,7 @@ function calculate() {
     if (charge === "weight_tier") continue;
     if ((charge === "raf_fee" || charge === "dg_dec") && !dg) continue;
     if (charge === "label_inspection" && !(dg || dryIce)) continue;
+    // ensure we continue through all charges, never short-circuit based on DG status
     let amount = 0;
     let calc = "";
     if (data.unit === "per_kg") {
