@@ -81,6 +81,14 @@ function calculate() {
       amount = data.rate * usedWeight;
       calc = `${usedWeight.toFixed(2)} × ${data.rate}`;
     } else if (data.unit === "per_box") {
+      // Always calculate per_box in addition to all other charges — do not isolate
+      if (charge === "raf_fee") {
+        amount = Math.max(130, boxCount * data.rate);
+        calc = `${boxCount} × ${data.rate} or $130 min`;
+      } else {
+        amount = data.rate * boxCount;
+        calc = `${boxCount} × ${data.rate}`;
+      }
       if (charge === "raf_fee") {
         amount = Math.max(130, boxCount * data.rate);
         calc = `${boxCount} × ${data.rate} or $130 min`;
