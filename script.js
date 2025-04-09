@@ -70,14 +70,21 @@ function calculate() {
 
   for (const [charge, data] of Object.entries(matchedTier)) {
     if (charge === "weight_tier") continue;
+    if ((charge === "raf_fee" || charge === "dg_dec") && !dg) continue;
+    if (charge === "label_inspection" && !(dg || dryIce)) continue;
     let amount = 0;
     let calc = "";
     if (data.unit === "per_kg") {
       amount = data.rate * usedWeight;
       calc = `${usedWeight.toFixed(2)} × ${data.rate}`;
     } else if (data.unit === "per_box") {
-      amount = data.rate * boxCount;
-      calc = `${boxCount} × ${data.rate}`;
+      if (charge === "raf_fee") {
+        amount = Math.max(130, boxCount * data.rate);
+        calc = `${boxCount} × ${data.rate} or $130 min`;
+      } else {
+        amount = data.rate * boxCount;
+        calc = `${boxCount} × ${data.rate}`;
+      }
     } else if (data.unit === "flat") {
       amount = data.rate;
       calc = "Flat";
